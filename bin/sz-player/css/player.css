@@ -1,0 +1,164 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 64px;
+  backdrop-filter: saturate(180%) blur(30px);
+  background-color: var(--color-navbar-bg);
+  z-index: 100;
+}
+
+@supports (-moz-appearance: none) {
+  .player {
+    background-color: var(--color-body-bg);
+  }
+}
+.progress-bar {
+  margin-top: -6px;
+  margin-bottom: -6px;
+  width: 100%;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 100%;
+  padding-right: 10vw;
+  padding-left: 10vw;
+}
+
+@media (max-width: 1336px) {
+  .controls {
+    padding: 0 5vw;
+  }
+}
+.blank {
+  flex-grow: 1;
+}
+
+.playing {
+  display: flex;
+}
+
+.playing .container {
+  display: flex;
+  align-items: center;
+}
+.playing .container img {
+  height: 46px;
+  border-radius: 5px;
+  box-shadow: 0 6px 8px -2px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  user-select: none;
+}
+.playing .container .track-info {
+  height: 46px;
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.playing .container .track-info .name {
+  font-weight: 600;
+  font-size: 16px;
+  opacity: 0.88;
+  color: var(--color-text);
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  word-break: break-all;
+}
+.playing .container .track-info .has-list {
+  cursor: pointer;
+}
+.playing .container .track-info .has-list:hover {
+  text-decoration: underline;
+}
+.playing .container .track-info .artist {
+  font-size: 12px;
+  opacity: 0.58;
+  color: var(--color-text);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  word-break: break-all;
+}
+.playing .container .track-info .artist span.ar {
+  cursor: pointer;
+}
+.playing .container .track-info .artist span.ar:hover {
+  text-decoration: underline;
+}
+
+.middle-control-buttons {
+  display: flex;
+}
+
+.middle-control-buttons .container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8px;
+}
+.middle-control-buttons .container .button-icon {
+  margin: 0 8px;
+}
+.middle-control-buttons .container .play {
+  height: 42px;
+  width: 42px;
+}
+.middle-control-buttons .container .play .svg-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.right-control-buttons {
+  display: flex;
+}
+
+.right-control-buttons .container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.right-control-buttons .container .expand {
+  margin-left: 24px;
+}
+.right-control-buttons .container .expand .svg-icon {
+  height: 24px;
+  width: 24px;
+}
+.right-control-buttons .container .active .svg-icon {
+  color: var(--color-primary);
+}
+.right-control-buttons .container .volume-control {
+  margin-left: 4px;
+  display: flex;
+  align-items: center;
+}
+.right-control-buttons .container .volume-control .volume-bar {
+  width: 84px;
+}
+
+.like-button {
+  margin-left: 16px;
+}
+
+.button-icon.disabled {
+  cursor: default;
+  opacity: 0.38;
+}
+.button-icon.disabled:hover {
+  background: none;
+}
+.button-icon.disabled:active {
+  transform: unset;
+}

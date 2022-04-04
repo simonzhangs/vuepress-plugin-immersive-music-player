@@ -1,0 +1,40 @@
+{
+  "name": "vuepress-plugin-immersive-music-player",
+  "version": "1.0.0",
+  "description": "vuepress插件-沉浸式音乐播放器插件",
+  "main": "index.js",
+  "bin": {
+    "vuepress-plugin-immersive-music-player": "enhanceAppFile.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonzhangs/vuepress-plugin-immersive-music-player.git"
+  },
+  "keywords": [
+    "vue",
+    "vuepress",
+    "plugin",
+    "music",
+    "music-bar",
+    "插件",
+    "vuepress插件",
+    "音乐",
+    "bgm",
+    "player",
+    "immersive"
+  ],
+  "author": "simonzhangs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/issues"
+  },
+  "homepage": "https://github.com/simonzhangs/vuepress-plugin-immersive-music-player#readme",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "howler": "^2.2.3",
+    "vue-slider-component": "^3.2.15"
+  }
+}
