@@ -1,6 +1,6 @@
 # Change Log
 
-[README](./README.md) | [CHANGELOG](./CHANGELOG.md)
+[[README](./README.md)](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/readme.md) | [[CHANGELOG](./CHANGELOG.md)](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)
 
 
 ## 1.0.0 - 1.0.5 
