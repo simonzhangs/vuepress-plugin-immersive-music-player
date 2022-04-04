@@ -1,6 +1,6 @@
 {
   "name": "vuepress-plugin-immersive-music-player",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "vuepress插件-沉浸式音乐播放器插件",
   "main": "index.js",
   "bin": {
@@ -35,6 +35,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "howler": "^2.2.3",
+    "vue-no-ssr": "^1.1.1",
     "vue-slider-component": "^3.2.15"
   }
 }

@@ -8,13 +8,13 @@
   justify-content: space-around;
   height: 64px;
   backdrop-filter: saturate(180%) blur(30px);
-  background-color: var(--color-navbar-bg);
+  background-color: rgba(255, 255, 255, 0.86);
   z-index: 100;
 }
 
 @supports (-moz-appearance: none) {
   .player {
-    background-color: var(--color-body-bg);
+    background-color: #ffffff;
   }
 }
 .progress-bar {
@@ -36,6 +36,11 @@
     padding: 0 5vw;
   }
 }
+
+svg {
+  fill: currentColor;
+}
+
 .blank {
   flex-grow: 1;
 }
@@ -66,7 +71,7 @@
   font-weight: 600;
   font-size: 16px;
   opacity: 0.88;
-  color: var(--color-text);
+  color: #000;
   margin-bottom: 4px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -83,7 +88,7 @@
 .playing .container .track-info .artist {
   font-size: 12px;
   opacity: 0.58;
-  color: var(--color-text);
+  color: #000;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
@@ -137,7 +142,7 @@
   width: 24px;
 }
 .right-control-buttons .container .active .svg-icon {
-  color: var(--color-primary);
+  color: #335eea;
 }
 .right-control-buttons .container .volume-control {
   margin-left: 4px;

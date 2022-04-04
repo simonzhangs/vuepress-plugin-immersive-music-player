@@ -6,9 +6,9 @@ module.exports = (options, context) => ({
             MUSICBAR_OPTIONS: options,
         }
     },
-    name: 'vuepress-plugin-simonzhangs-musicplayer',
+    name: 'vuepress-plugin-immersive-music-player',
     enhanceAppFiles: [
         path.resolve(__dirname,'./bin/enhanceAppFile.js')
     ],
-    globalUIComponents: 'szPlayer'
+    globalUIComponents: 'szPlayer',
 })

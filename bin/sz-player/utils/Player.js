@@ -108,7 +108,7 @@ export default class {
     if (this._enabled) {
       // 恢复当前播放歌曲
       this._replaceCurrentTrack(this._currentTrack.id, false).then(() => {
-        this._howler?.seek(localStorage.getItem("playerCurrentTrackTime") ?? 0);
+        // this._howler?.seek(window.localStorage.getItem("playerCurrentTrackTime") ?? 0);
       });
       // update audio source and init howler
       this._initMediaSession();
@@ -125,13 +125,13 @@ export default class {
     setInterval(() => {
       if (this._howler === null) return;
       this._progress = this._howler.seek();
-      localStorage.setItem("playerCurrentTrackTime", this._progress);
+      // window.localStorage.setItem("playerCurrentTrackTime", this._progress);
     }, 1000);
   }
 
   //player 实例对象从缓存读取
   _loadSelfFromLocalStorage() {
-    const player = JSON.parse(localStorage.getItem("player"));
+    // const player = JSON.parse(window.localStorage.getItem("player"));
     if (!player) return;
     for (const [key, value] of Object.entries(player)) {
       this[key] = value;
@@ -366,5 +366,16 @@ export default class {
       let trackIDs = data.playlist.trackIds.map((t) => t.id);
       this.replacePlaylist(trackIDs, id, "playlist", trackID);
     });
+  }
+
+  // 缓存播放列表
+  saveSelfToLocalStorage() {
+    let player = {};
+    for (let [key, value] of Object.entries(this)) {
+      // if (key !== _playing) continue;
+      player[key] = value;
+    }
+
+    // window.localStorage.setItem('player', JSON.stringify(player));
   }
 }

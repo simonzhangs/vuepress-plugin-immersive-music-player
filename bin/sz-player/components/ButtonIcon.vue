@@ -23,8 +23,8 @@ button {
   border-radius: 25%;
   transition: 0.2s;
 }
-button .svg-icon {
-  color: var(--color-text);
+button svg {
+  color: #000;
   height: 16px;
   width: 16px;
 }
@@ -32,9 +32,13 @@ button:first-child {
   margin-left: 0;
 }
 button:hover {
-  background: var(--color-secondary-bg-for-transparent);
+  background: rgba(209, 209, 214, 0.28);
 }
 button:active {
   transform: scale(0.92);
+}
+
+svg {
+  fill: currentColor;
 }
 </style>
