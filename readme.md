@@ -7,9 +7,11 @@
 
 [English](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/README-EN.md) | 简体中文
 
-## 🍉 Version 1.0.X
+## 🌟 Version 1.1.X
 
-目前仍然是开发版本，可能存在意想不到的 bug，请各位大佬帮忙指正。
+### 新特性
+- 支持自定义配置播放歌单
+- 支持自定义配置播放进度条主题
 
 #### 安装
 
@@ -44,11 +46,30 @@ $ yarn add vuepress-plugin-immersive-music-player
 module.exports = {
   plugins: [
     //...
-    ['vuepress-plugin-immersive-music-player']
+    ['vuepress-plugin-immersive-music-player',{
+      sliderStyle:{theme: 'isSpitRainbow'},
+      playListID: 633015043,
+    }]
     //...
   ]
 };
 ```
+### sliderStyle
+
+用于配置播放进度条主题，目前共三个主题：`isSpitRainbow`,`isRainbow`,`isNyancat`;效果图如下：
+
+- `isSpitRainbow`:
+![`isSpitRainbow`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/spitRainbow-example.7iblvhk8l5o0.webp)
+
+- `isRainbow`:
+![`isRainbow`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/rainbow-exapmle.60mrbyhx2cc0.webp)
+
+- `isNyancat`:
+![`isNyancat`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/nyancat-example.3zqlf6pdhny0.webp)
+
+### playListID
+
+用于配置播放器播放歌单，输入网易云中你想听的歌单ID即可；歌单ID可以参考[HowlerMusic网站-基于网易云接口在线播放器](http://woaitouxiang.top)
 
 ## 📚 文档
 
@@ -60,7 +81,7 @@ module.exports = {
 
 ## 更新日志
 
-每个版本的[[CHANGELOG](./CHANGELOG.md)](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)。
+每个版本的[CHANGELOG](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)。
 
 
 ## License

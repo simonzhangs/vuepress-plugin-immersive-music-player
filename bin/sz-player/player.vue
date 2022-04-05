@@ -4,10 +4,7 @@
     <!-- 播放进度条 -->
     <div
       class="progress-bar"
-      :class="{
-        nyancat: processBarStyle,
-        'nyancat-stop': processBarStyle && !this.player._playing,
-      }"
+      :class="barStyle"
       @click.stop
     >
       <vue-slider
@@ -413,7 +410,7 @@ import ButtonIcon from "./components/ButtonIcon.vue";
 import { Howler, Howl } from "howler";
 import { getTrackDetail, getMusicUrl, getPlaylistDetail } from "./api/music";
 
-var { processBarStyle = false, ...paths } = MUSICBAR_OPTIONS;
+let { sliderStyle,playListID, ...paths } = MUSICBAR_OPTIONS;
 
 export default {
   name: "Player",
@@ -440,8 +437,12 @@ export default {
         // howler (https://github.com/goldfire/howler.js)
         _howler: null,
       },
+      sliderStyle:{
+        isNyancat: false,
+        isRainbow: false,
+        isSpitRainbow: false,
+      },
       showLyrics: false,
-      processBarStyle: true,
       enableReversedMode: true,
     };
   },
@@ -450,6 +451,27 @@ export default {
     currentTrack() {
       console.log("currentTrack() ", this.player._currentTrack);
       return this.player._currentTrack;
+    },
+    barStyle() {
+      // 样式倒序判断
+      if (this.sliderStyle.isSpitRainbow) {
+        return {
+          spitRainbow: true,
+          'spitRainbow-stop':this.sliderStyle.isSpitRainbow && !this.player._playing
+        }
+      }
+      if (this.sliderStyle.isRainbow) {
+        return {
+          rainbow: true,
+          'rainbow-stop':this.sliderStyle.isRainbow && !this.player._playing
+        }
+      }
+      if (this.sliderStyle.isNyancat) {
+        return {
+          nyancat: true,
+          'nyancat-stop': this.sliderStyle.isNyancat && !this.player._playing,
+        }
+      }
     },
     volume: {
       get() {
@@ -511,7 +533,16 @@ export default {
   },
   created() {
     this.init();
-    this.playPlaylistByID(2761182502);
+    this.playPlaylistByID(playListID);
+    if (sliderStyle.theme === 'isRainbow') {
+      this.sliderStyle.isRainbow = true;
+    }
+    if (sliderStyle.theme === 'isNyancat') {
+      this.sliderStyle.isNyancat = true;
+    }
+    if (sliderStyle.theme === 'isSpitRainbow') {
+      this.sliderStyle.isSpitRainbow = true;
+    }
   },
   mounted() {
     // this.playPlaylistByID(6964020220);
@@ -521,7 +552,7 @@ export default {
       for (let i in paths) {
         if (typeof i !== "string") return;
         if (match(i, route.path).matches) {
-          console.log("watching is on");
+          console.log("watching is on :");
           processBarStyle =
             MUSICBAR_OPTIONS[i].processBarStyle ||
             MUSICBAR_OPTIONS.processBarStyle ||
@@ -531,7 +562,6 @@ export default {
     },
   },
   methods: {
-    // ...mapMutations(["toggleLyrics"]),
     init() {
       this._loadSelfFromLocalStorage();
       Howler.autoUnlock = false;
@@ -791,7 +821,7 @@ export default {
     },
     // 播放
     play() {
-      if (this.player._howler?.playing()) return;
+      if (this.player._howler?.playing())  return;
       this.player._howler?.play();
       this._setPlaying(true);
       if (this.player._currentTrack.name) {

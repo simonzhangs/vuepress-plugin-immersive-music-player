@@ -1,16 +1,22 @@
-/* rail style */
+/* rail style 
+  整个进度条
+*/
 .vue-slider-rail {
   background-color: rgba(128, 128, 128, 0.18);
   border-radius: 15px;
 }
 
-/* process style */
+/* process style 
+已经移动的播放条
+*/
 .vue-slider-process {
   background-color: #335eea;
   border-radius: 15px;
 }
 
-/* dot style */
+/* dot style 
+将要走的一小段播放条
+*/
 .vue-slider-dot-handle {
   cursor: pointer;
   width: 100%;
@@ -102,6 +108,88 @@
 
 .nyancat-stop .vue-slider-dot-handle {
   background-image: url("/img/logos/nyancat-stop.png");
+  transition: 300ms;
+}
+
+/* rainbow */
+.rainbow .vue-slider-rail {
+  background-color: rgba(128, 128, 128, 0.18);
+  padding: 2.5px 0px;
+  border-radius: 0;
+}
+
+.rainbow .vue-slider-process {
+  padding: 0px 1px;
+  top: -2px;
+  border-radius: 0;
+  background: linear-gradient(
+    to left,
+    #f00,
+    #f90,
+    #ff0,
+    #3f0,
+    #09f,
+    #63f
+  );
+}
+.rainbow .vue-slider-dot-handle {
+  background: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/rainbow.65sra0oun9g0.gif");
+  background-size: 36px;
+  width: 36px;
+  height: 24px;
+  margin-top: -6px;
+  box-shadow: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  visibility: visible;
+}
+
+.rainbow-stop .vue-slider-dot-handle {
+  background-image: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/rainbow-stop.596vbcs7tto0.webp");
+  transition: 300ms;
+}
+
+
+/* spitRainbow */
+.spitRainbow .vue-slider-rail {
+  background-color: rgba(128, 128, 128, 0.18);
+  padding: 2.5px 0px;
+  border-radius: 0;
+}
+
+.spitRainbow .vue-slider-process {
+  padding: 0px 1px;
+  top: -2px;
+  border-radius: 0;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0, #f00),
+    color-stop(17%, #f90),
+    color-stop(33%, #ff0),
+    color-stop(50%, #3f0),
+    color-stop(67%, #09f),
+    color-stop(83%, #63f)
+  );
+  transform: rotateY(-180deg);
+}
+.spitRainbow .vue-slider-dot-handle {
+  background: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/spitRainbow.6uul81txwk00.gif");
+  background-size: 36px;
+  width: 36px;
+  height: 24px;
+  margin-top: -12px;
+  margin-left: -4px;
+  box-shadow: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  visibility: visible;
+  transform: rotateY(-180deg);
+}
+
+.spitRainbow-stop .vue-slider-dot-handle {
+  background-image: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/spitRainbow.11cjipm58n1s.webp");
   transition: 300ms;
 }
 

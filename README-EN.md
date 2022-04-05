@@ -5,11 +5,14 @@
 
 > 🎚 An immersive and personalized vuepress music plugin
 
-[English](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/README-EN.md) | 简体中文
+[English] | [简体中文](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player#readme)
 
-## 🍉 Version 1.0.X
+## 🌟 Version 1.1.X
 
-It is still a development version, there may be unexpected bugs, please help to correct me.
+### New features
+- Support custom configuration to play playlist
+- Support for custom configuration playback progress bar theme
+
 
 #### install
 
@@ -49,6 +52,23 @@ module.exports = {
 };
 ```
 
+### sliderStyle
+
+It is used to configure the theme of the playback progress bar. There are currently three themes: `isSpitRainbow`, `isRainbow`, `isNyancat`; the renderings are as follows:
+
+- `isSpitRainbow`:
+![`isSpitRainbow`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/spitRainbow-example.7iblvhk8l5o0.webp)
+
+- `isRainbow`:
+![`isRainbow`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/rainbow-exapmle.60mrbyhx2cc0.webp)
+
+- `isNyancat`:
+![`isNyancat`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/nyancat-example.3zqlf6pdhny0.webp)
+
+### playListID
+
+It is used to configure the player to play the playlist, just enter the playlist ID you want to listen to in NetEase Cloud; the playlist ID can refer to [HowlerMusic website - online player based on NetEase cloud interface](http://woaitouxiang.top)
+
 ## 📚  Documentation
 
 Document：TODO
@@ -59,7 +79,7 @@ Plug-in configuration effect： [online address](https://simonzhangs.github.io/)
 
 ## Changelog
 
-Each version[[CHANGELOG](./CHANGELOG.md)](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)。
+Each version[CHANGELOG](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)。
 
 
 ## License

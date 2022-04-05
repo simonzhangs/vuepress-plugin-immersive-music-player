@@ -1,9 +1,16 @@
 # Change Log
 
-[[README](./README.md)](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/readme.md) | [[CHANGELOG](./CHANGELOG.md)](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)
+[README](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/readme.md) | [CHANGELOG](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)
 
 
-# 1.0.6
+## 1.1.0
+
+### What's New ✨
+- 支持自定义配置播放歌单
+- 支持自定义配置播放进度条主题
+
+
+## 1.0.6
 
 ### fix bugs
 - svg 图标显示
