@@ -20,6 +20,7 @@ $ yarn add vuepress-plugin-immersive-music-player
 
 #### 注意事项
 - `./bin/sz-player/logos` 文件夹内容需复制放在 `./vuepress/public/img/logos` 文件夹下。
+- `npm run build` 构建生成了dist文件夹，插件便生效了，部署到自己服务器即可。
 
 ## ✨ 特性
 - 🍖 个性化播放进度条

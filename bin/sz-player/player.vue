@@ -6,7 +6,7 @@
       class="progress-bar"
       :class="{
         nyancat: processBarStyle,
-        'nyancat-stop': processBarStyle && !this.player.playing,
+        'nyancat-stop': processBarStyle && !this.player._playing,
       }"
       @click.stop
     >
@@ -404,6 +404,8 @@
 <script>
 import VueSlider from "vue-slider-component/dist-css/vue-slider-component.umd.min.js";
 import "vue-slider-component/dist-css/vue-slider-component.css";
+// import theme
+import 'vue-slider-component/theme/default.css'
 import "./css/slider.css";
 
 import ButtonIcon from "./components/ButtonIcon.vue";
@@ -425,6 +427,7 @@ export default {
         _playing: false, // 是否正在播放中
         _progress: 0, // 当前播放歌曲的进度
         _enabled: false, // 是否启用Player
+        _repeatMode:"off", // off | on | one
         _volume: 1, // 0 to 1
         _volumeBeforeMuted: 1, // 用于保存静音前的音量
 
@@ -694,6 +697,9 @@ export default {
         src: [source],
         html5: true,
         format: ["mp3", "flac"],
+        onend: () => {
+          this._nextTrackCallback();
+        }
       });
       if (autoplay) {
         this.play();
@@ -729,6 +735,14 @@ export default {
       }
       return [this.list[next], next];
     },
+    // 自动播放下一首
+    _nextTrackCallback() {
+    if (this.repeatMode === 'one') {
+      this._replaceCurrentTrack(this._currentTrack.id);
+    } else {
+      this.playNextTrack();
+    }
+  },
 
     _initMediaSession() {
       if ("mediaSession" in navigator) {
@@ -822,18 +836,18 @@ export default {
       playlistSourceType,
       autoPlayTrackID = "first"
     ) {
-      if (!this._enabled) this._enabled = true;
-      this.list = trackIDs;
-      this.current = 0;
+      if (!this.player._enabled) this.player._enabled = true;
+      this.player._list = trackIDs;
+      this.player._current = 0;
       this.player._playlistSource = {
         type: playlistSourceType,
         id: playlistSourceID,
       };
       // if (this.shuffle) this._shuffleTheList(autoPlayTrackID);
       if (autoPlayTrackID === "first") {
-        this._replaceCurrentTrack(this.list[0]);
+        this._replaceCurrentTrack(this.player._list[0]);
       } else {
-        this.current = trackIDs.indexOf(autoPlayTrackID);
+        this.player._current = trackIDs.indexOf(autoPlayTrackID);
         this._replaceCurrentTrack(autoPlayTrackID);
       }
     },

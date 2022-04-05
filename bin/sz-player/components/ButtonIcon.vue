@@ -39,6 +39,6 @@ button:active {
 }
 
 svg {
-  fill: currentColor;
+  fill: #000;
 }
 </style>

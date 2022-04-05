@@ -35,6 +35,11 @@ service.interceptors.request.use(function (config) {
     // if (['HTTP', 'HTTPS'].includes(proxy.protocol)) {
     //     config.params.proxy = `${proxy.protocol}://${proxy.server}:${proxy.port}`;
     // }
+    config.proxyConfig = {
+        protocol: 'noProxy',
+        server: '',
+        port: null,
+    };
     return config;
 });
 
