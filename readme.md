@@ -7,6 +7,8 @@
 
 [English](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/README-EN.md) | 简体中文
 
+更新日志[CHANGELOG](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)。
+
 ## 🌟 Version 1.1.X
 
 ### 新特性
@@ -21,7 +23,6 @@ $ yarn add vuepress-plugin-immersive-music-player
 ```
 
 #### 注意事项
-- `./bin/sz-player/logos` 文件夹内容需复制放在 `./vuepress/public/img/logos` 文件夹下。
 - `npm run build` 构建生成了dist文件夹，插件便生效了，部署到自己服务器即可。
 
 ## ✨ 特性
@@ -56,7 +57,7 @@ module.exports = {
 ```
 ### sliderStyle
 
-用于配置播放进度条主题，目前共三个主题：`isSpitRainbow`,`isRainbow`,`isNyancat`;效果图如下：
+用于配置播放进度条主题，目前共四个主题：`isSpitRainbow`,`isRainbow`,`isNyancat`,`isMario`;效果图如下：
 
 - `isSpitRainbow`:
 ![`isSpitRainbow`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/spitRainbow-example.7iblvhk8l5o0.webp)
@@ -66,6 +67,9 @@ module.exports = {
 
 - `isNyancat`:
 ![`isNyancat`](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/nyancat-example.3zqlf6pdhny0.webp)
+
+- `isMario`:
+![mario-example](https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vue-plugin-example/mario-example.3bmtxznwesc0.webp)
 
 ### playListID
 

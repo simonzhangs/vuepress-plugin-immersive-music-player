@@ -441,6 +441,7 @@ export default {
         isNyancat: false,
         isRainbow: false,
         isSpitRainbow: false,
+        isMario: false,
       },
       showLyrics: false,
       enableReversedMode: true,
@@ -454,6 +455,12 @@ export default {
     },
     barStyle() {
       // 样式倒序判断
+      if (this.sliderStyle.isMario) {
+        return {
+          mario: true,
+          'mario-stop':this.sliderStyle.isMario && !this.player._playing
+        }
+      }
       if (this.sliderStyle.isSpitRainbow) {
         return {
           spitRainbow: true,
@@ -542,6 +549,9 @@ export default {
     }
     if (sliderStyle.theme === 'isSpitRainbow') {
       this.sliderStyle.isSpitRainbow = true;
+    }
+    if (sliderStyle.theme === 'isMario') {
+      this.sliderStyle.isMario = true;
     }
   },
   mounted() {
@@ -731,6 +741,13 @@ export default {
           this._nextTrackCallback();
         }
       });
+      console.log(this.player._howler);
+      // fix：对于网易云请求不到的资源，跳过
+      setTimeout(() => {
+        if (!this.player?._howler?._duration) {
+        this.playNextTrack();
+        }
+      }, 1500);
       if (autoplay) {
         this.play();
         if (this.player._currentTrack.name) {
@@ -795,8 +812,8 @@ export default {
     // 设置浏览器tab栏信息
     setTitle(track) {
       document.title = track
-        ? `${track.name} · ${track.ar[0].name} - HowlerMusic`
-        : "HowlerMusic";
+        ? `${track.name} · ${track.ar[0].name} - vuepress-plugin-music-player`
+        : "vuepress-plugin-music-player";
     },
 
     // 播放下一首歌曲

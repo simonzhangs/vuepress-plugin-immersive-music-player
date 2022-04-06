@@ -1,7 +1,7 @@
 {
   "name": "vuepress-plugin-immersive-music-player",
-  "version": "1.1.0",
-  "description": "vuepress插件-沉浸式音乐播放器插件",
+  "version": "1.1.1",
+  "description": "An immersive and personalized vuepress music plugin | 一个沉浸式个性化的vuepress 音乐插件",
   "main": "index.js",
   "bin": {
     "vuepress-plugin-immersive-music-player": "enhanceAppFile.js"

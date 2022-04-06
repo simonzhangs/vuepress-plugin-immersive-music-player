@@ -2,6 +2,13 @@
 
 [README](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/readme.md) | [CHANGELOG](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)
 
+## 1.1.1
+
+### fix bugs
+- 修改部分歌曲不能播放的bug，并且自动跳过这些歌曲
+
+### add
+- 新增一个播放条主题
 
 ## 1.1.0
 

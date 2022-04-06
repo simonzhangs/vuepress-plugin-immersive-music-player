@@ -95,7 +95,7 @@
 }
 
 .nyancat .vue-slider-dot-handle {
-  background: url("/img/logos/nyancat.gif");
+  background: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/nyancat.28m570eq7bk0.gif");
   background-size: 36px;
   width: 36px;
   height: 24px;
@@ -107,7 +107,7 @@
 }
 
 .nyancat-stop .vue-slider-dot-handle {
-  background-image: url("/img/logos/nyancat-stop.png");
+  background-image: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/nyancat-stop.18qvy03knz1c.webp");
   transition: 300ms;
 }
 
@@ -176,11 +176,11 @@
 }
 .spitRainbow .vue-slider-dot-handle {
   background: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/spitRainbow.6uul81txwk00.gif");
+  margin-top: -12px;
+  margin-left: -6px;
   background-size: 36px;
   width: 36px;
   height: 24px;
-  margin-top: -12px;
-  margin-left: -4px;
   box-shadow: none;
   border-radius: 0;
   box-sizing: border-box;
@@ -190,6 +190,45 @@
 
 .spitRainbow-stop .vue-slider-dot-handle {
   background-image: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/spitRainbow.11cjipm58n1s.webp");
+  transition: 300ms;
+}
+
+/* mario */
+.mario .vue-slider-rail {
+  background-color: rgba(128, 128, 128, 0.18);
+  padding: 2.5px 0px;
+  border-radius: 0;
+}
+
+.mario .vue-slider-process {
+  padding: 0px 1px;
+  top: -2px;
+  border-radius: 0;
+  background: linear-gradient(
+    to left,
+    #f00,
+    #f90,
+    #038,
+    #09f,
+    #080,
+    #3f0,
+  );
+}
+.mario .vue-slider-dot-handle {
+  background: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/mario-mm.4hxyz0m3vam0.gif");
+  margin-top: -30px;
+  margin-left: -12px;
+  background-size: 40px;
+  width: 40px;
+  height: 40px;
+  box-shadow: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  visibility: visible;
+}
+
+.mario-stop .vue-slider-dot-handle {
+  background-image: url("https://cdn.jsdelivr.net/gh/simonzhangs/image-hosting@master/vuepress-plguin-immersive-music-player/mario-mm-stop.3s9anm6w7s80.gif");
   transition: 300ms;
 }
 

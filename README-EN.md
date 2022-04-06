@@ -22,7 +22,7 @@ $ yarn add vuepress-plugin-immersive-music-player
 ```
 
 #### Caution
-- The contents of the `./bin/sz-player/logos` folder need to be copied to the `./vuepress/public/img/logos` folder.
+- `npm run build`,when the dist folder is generated after construction, the plug-in takes effect and can be deployed to your own server.
 
 ## ✨ Features
 - 🍖 Personalized playback progress bar
