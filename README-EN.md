@@ -12,6 +12,7 @@
 ### New features
 - Support custom configuration to play playlist
 - Support for custom configuration playback progress bar theme
+- 🌟 new! Support the user interface to directly input the playlist ID to replace the playlist. Blog visitors can enter the selected playlist when browsing the blog
 
 
 #### install

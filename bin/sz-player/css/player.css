@@ -152,6 +152,66 @@ svg {
 .right-control-buttons .container .volume-control .volume-bar {
   width: 84px;
 }
+.right-control-buttons .container .replace {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  background: var(--color-secondary-bg-for-transparent);
+  border-radius: 8px;
+  width: 120px;
+  margin-right: 12px;
+}
+.container .replace svg {
+    height: 16px;
+    width: 16px;
+    color: var(--color-text);
+    opacity: 1;
+    margin-left:-16px;
+    margin-right: -10px;
+}
+.container .replace  input {
+  font-size: 16px;
+  width: 100px;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  margin-top: -1px;
+  margin-left: 12px;
+  color: var(--color-text);
+}
+.container .replace  input::placeholder {
+  font-size: 14px;
+  font-weight: 400;
+  padding-left: 12px;
+}
+
+.container .active {
+  background: var(--color-primary-bg-for-transparent);
+}
+
+.container .active input,svg {
+  color: var(--color-primary);
+}
+
+.container .replace .tip {
+  position: absolute;
+  transform: translate(-12%,-50%);
+}
+
+.container .replace .tip ul li {
+  list-style: none;
+  text-decoration: none;
+  font-weight: 600;
+  padding-bottom: 16px;
+  text-align: center;
+  border: 1px solid rgb(66, 65, 65);
+  padding: 4px 4px;
+  margin-bottom: 1px;
+}
+
+.container .replace .tip ul li:hover {
+  color: #335eea;
+}
 
 .like-button {
   margin-left: 16px;

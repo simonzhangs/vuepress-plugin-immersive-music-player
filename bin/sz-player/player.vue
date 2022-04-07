@@ -182,6 +182,30 @@
       <div class="right-control-buttons">
         <div class="blank"></div>
         <div class="container" @click.stop>
+          <div class="replace"
+          title="替换歌单"
+          :class="{active:inputFocus}"
+          >
+            <svg t="1649296379570" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1956" width="64" height="64"><path d="M243.456 371.541a42.667 42.667 0 0 1-60.33-60.33l170.666-170.667c26.88-26.88 72.832-7.85 72.832 30.165v682.667a42.667 42.667 0 0 1-85.333 0v-579.67l-97.835 97.835z m439.21 378.752l97.835-97.834a42.667 42.667 0 0 1 60.331 60.33L670.165 883.456c-26.88 26.88-72.832 7.85-72.832-30.165V170.624a42.667 42.667 0 0 1 85.334 0v579.67z" p-id="1957"></path></svg>
+            <input 
+            ref="input"
+              type="number" 
+              name="替换歌单"   
+              v-model="replaceID" 
+              @keyup.enter.stop='replacePlaylistID'
+              @focus="inputFocus = true;isTipShow=true;"
+              @blur="inputFocus = false;"
+              placeholder="替换歌单" />
+              <div class="tip" v-show="isTipShow">
+                <ul ref="recommendList">
+                  <li>飙升榜</li>
+                  <li>新歌榜</li>
+                  <li>云音乐民谣榜</li>
+                  <li>美国Billboard榜</li>
+                  <li>UK排行榜周榜</li>
+                </ul>
+              </div>
+          </div>
           <ButtonIcon
             title="播放列表"
             :class="{
@@ -445,6 +469,10 @@ export default {
       },
       showLyrics: false,
       enableReversedMode: true,
+      replaceID:'', // 飙升榜歌单
+      //推荐歌单
+      inputFocus: false,
+      isTipShow:false,
     };
   },
   computed: {
@@ -556,6 +584,8 @@ export default {
   },
   mounted() {
     // this.playPlaylistByID(6964020220);
+    // 绑定搜索推荐事件
+    this.recommendListBind();
   },
   watch: {
     $route: function(route) {
@@ -588,6 +618,41 @@ export default {
       }
 
       this._setIntervals();
+    },
+    // ul的每个li绑定时间
+    recommendListBind() {
+      let li = this.$refs.recommendList.querySelectorAll('li');
+      // console.log('li',li);
+      for(let i=0;i< li.length;i++) {
+        li[i].onclick = () =>{
+          this.getRecommendPlaylistID(li[i].innerText);
+          this.$refs.input.focus();
+        }
+      }
+    },
+    getRecommendPlaylistID(text) {
+      if (text === '飙升榜') {
+        this.replaceID = 19723756;
+      }
+      if (text === '新歌榜') {
+        this.replaceID = 3779629;
+      }
+      if (text === '美国Billboard榜') {
+        this.replaceID = 60198;
+      }
+      if (text === 'UK排行榜周榜') {
+        this.replaceID = 180106;
+      }
+      if (text === '云音乐民谣榜') {
+        this.replaceID = 5059661515;
+      }
+    },
+    // 替换推荐歌单
+    replacePlaylistID() {
+      this.playPlaylistByID(this.replaceID);
+      this.replaceID = '';
+      this.$refs.input.blur();
+      this.isTipShow = false;
     },
     toggleLyrics() {
       this.showLyrics = !this.showLyrics;
@@ -747,7 +812,7 @@ export default {
         if (!this.player?._howler?._duration) {
         this.playNextTrack();
         }
-      }, 1500);
+      }, 6000);
       if (autoplay) {
         this.play();
         if (this.player._currentTrack.name) {
@@ -838,7 +903,7 @@ export default {
     },
     // 播放
     play() {
-      if (this.player._howler?.playing())  return;
+      // if (this.player._howler?.playing())  return;
       this.player._howler?.play();
       this._setPlaying(true);
       if (this.player._currentTrack.name) {

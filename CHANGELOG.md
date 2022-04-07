@@ -2,6 +2,11 @@
 
 [README](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/readme.md) | [CHANGELOG](https://github.com/simonzhangs/vuepress-plugin-immersive-music-player/blob/main/CHANGELOG.md)
 
+## 1.1.2
+
+### add
+增加通过input输入歌单id直接替换播放歌单
+
 ## 1.1.1
 
 ### fix bugs
