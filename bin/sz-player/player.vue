@@ -433,6 +433,7 @@ import ButtonIcon from "./components/ButtonIcon.vue";
 
 import { Howler, Howl } from "howler";
 import { getTrackDetail, getMusicUrl, getPlaylistDetail } from "./api/music";
+import { throttle } from './utils/common'
 
 let { sliderStyle,playListID, ...paths } = MUSICBAR_OPTIONS;
 
@@ -567,8 +568,9 @@ export default {
     },
   },
   created() {
+    // 此时可以访问this，做数据初始化；或者异步数据请求
     this.init();
-    this.playPlaylistByID(playListID);
+    this.playPlaylistByID(playListID = 4989640759);
     if (sliderStyle.theme === 'isRainbow') {
       this.sliderStyle.isRainbow = true;
     }
@@ -583,7 +585,6 @@ export default {
     }
   },
   mounted() {
-    // this.playPlaylistByID(6964020220);
     // 绑定搜索推荐事件
     this.recommendListBind();
   },
@@ -661,10 +662,10 @@ export default {
       //TODO:收藏
     },
     playNextTrack() {
-      this.playNextTrack();
+      throttle(this.playNextTrack(), 1000);
     },
     playPrevTrack() {
-      this.playPrevTrack();
+      throttle(this.playPrevTrack(), 1000);
     },
     goToNextTracksPage() {
       if (this.player.isPersonalFM) return;
@@ -724,10 +725,6 @@ export default {
       autoplay = true,
       ifUnplayableThen = "playNextTrack"
     ) {
-      // 听歌记录同步到网易云
-      // if (autoplay && this._currentTrack.name) {
-      //   this._scrobble(this.currentTrack, this._howler?.seek());
-      // }
       return getTrackDetail(id).then((data) => {
         let track = data.songs[0];
         this.player._currentTrack = track;
@@ -812,7 +809,7 @@ export default {
         if (!this.player?._howler?._duration) {
         this.playNextTrack();
         }
-      }, 6000);
+      }, 5000);
       if (autoplay) {
         this.play();
         if (this.player._currentTrack.name) {
