@@ -38,7 +38,9 @@
 }
 
 svg {
-  fill: currentColor;
+  fill: #000;
+  width: 16px;
+  height: 16px;
 }
 
 .blank {
@@ -137,11 +139,11 @@ svg {
 .right-control-buttons .container .expand {
   margin-left: 24px;
 }
-.right-control-buttons .container .expand .svg-icon {
+.right-control-buttons .container .expand svg {
   height: 24px;
   width: 24px;
 }
-.right-control-buttons .container .active .svg-icon {
+.right-control-buttons .container .active svg {
   color: #335eea;
 }
 .right-control-buttons .container .volume-control {
@@ -195,7 +197,7 @@ svg {
 
 .container .replace .tip {
   position: absolute;
-  transform: translate(-12%,-50%);
+  transform: translate(-12%,-60%);
 }
 
 .container .replace .tip ul li {

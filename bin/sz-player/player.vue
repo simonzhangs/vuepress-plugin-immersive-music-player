@@ -2,11 +2,7 @@
   <!-- 页面底部播放控件 -->
   <div class="player" @click="toggleLyrics">
     <!-- 播放进度条 -->
-    <div
-      class="progress-bar"
-      :class="barStyle"
-      @click.stop
-    >
+    <div class="progress-bar" :class="barStyle" @click.stop>
       <vue-slider
         v-model="progress"
         :min="0"
@@ -24,6 +20,7 @@
     </div>
     <!-- 播放器控件 -->
     <div class="controls">
+      <!-- 左侧部分控件 -->
       <div class="playing">
         <div class="container" @click.stop>
           <!-- 图片-点击去专辑 -->
@@ -97,27 +94,6 @@
             </svg>
           </ButtonIcon>
           <ButtonIcon
-            v-show="player.isPersonalFM"
-            title="不喜欢"
-            @click.native="moveToFMTrash"
-          >
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              data-prefix="fas"
-              data-icon="thumbs-down"
-              class="svg-inline--fa fa-thumbs-down fa-w-16"
-              role="img"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 512 512"
-            >
-              <path
-                fill="currentColor"
-                d="M0 56v240c0 13.255 10.745 24 24 24h80c13.255 0 24-10.745 24-24V56c0-13.255-10.745-24-24-24H24C10.745 32 0 42.745 0 56zm40 200c0-13.255 10.745-24 24-24s24 10.745 24 24-10.745 24-24 24-24-10.745-24-24zm272 256c-20.183 0-29.485-39.293-33.931-57.795-5.206-21.666-10.589-44.07-25.393-58.902-32.469-32.524-49.503-73.967-89.117-113.111a11.98 11.98 0 0 1-3.558-8.521V59.901c0-6.541 5.243-11.878 11.783-11.998 15.831-.29 36.694-9.079 52.651-16.178C256.189 17.598 295.709.017 343.995 0h2.844c42.777 0 93.363.413 113.774 29.737 8.392 12.057 10.446 27.034 6.148 44.632 16.312 17.053 25.063 48.863 16.382 74.757 17.544 23.432 19.143 56.132 9.308 79.469l.11.11c11.893 11.949 19.523 31.259 19.439 49.197-.156 30.352-26.157 58.098-59.553 58.098H350.723C358.03 364.34 384 388.132 384 430.548 384 504 336 512 312 512z"
-              ></path>
-            </svg>
-          </ButtonIcon>
-          <ButtonIcon
             class="play"
             :title="playing ? '暂停' : '开始'"
             @click.native="playOrPause"
@@ -182,29 +158,44 @@
       <div class="right-control-buttons">
         <div class="blank"></div>
         <div class="container" @click.stop>
-          <div class="replace"
-          title="替换歌单"
-          :class="{active:inputFocus}"
-          >
-            <svg t="1649296379570" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1956" width="64" height="64"><path d="M243.456 371.541a42.667 42.667 0 0 1-60.33-60.33l170.666-170.667c26.88-26.88 72.832-7.85 72.832 30.165v682.667a42.667 42.667 0 0 1-85.333 0v-579.67l-97.835 97.835z m439.21 378.752l97.835-97.834a42.667 42.667 0 0 1 60.331 60.33L670.165 883.456c-26.88 26.88-72.832 7.85-72.832-30.165V170.624a42.667 42.667 0 0 1 85.334 0v579.67z" p-id="1957"></path></svg>
-            <input 
-            ref="input"
-              type="number" 
-              name="替换歌单"   
-              v-model="replaceID" 
-              @keyup.enter.stop='replacePlaylistID'
-              @focus="inputFocus = true;isTipShow=true;"
-              @blur="inputFocus = false;"
-              placeholder="替换歌单" />
-              <div class="tip" v-show="isTipShow">
-                <ul ref="recommendList">
-                  <li>飙升榜</li>
-                  <li>新歌榜</li>
-                  <li>云音乐民谣榜</li>
-                  <li>美国Billboard榜</li>
-                  <li>UK排行榜周榜</li>
-                </ul>
-              </div>
+          <div class="replace" title="替换歌单" :class="{ active: inputFocus }">
+            <svg
+              t="1649296379570"
+              class="icon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="1956"
+              width="64"
+              height="64"
+            >
+              <path
+                d="M243.456 371.541a42.667 42.667 0 0 1-60.33-60.33l170.666-170.667c26.88-26.88 72.832-7.85 72.832 30.165v682.667a42.667 42.667 0 0 1-85.333 0v-579.67l-97.835 97.835z m439.21 378.752l97.835-97.834a42.667 42.667 0 0 1 60.331 60.33L670.165 883.456c-26.88 26.88-72.832 7.85-72.832-30.165V170.624a42.667 42.667 0 0 1 85.334 0v579.67z"
+                p-id="1957"
+              ></path>
+            </svg>
+            <input
+              ref="input"
+              type="number"
+              name="替换歌单"
+              v-model="replaceID"
+              @keyup.enter.stop="replacePlaylistID"
+              @focus="
+                inputFocus = true;
+                isTipShow = true;
+              "
+              @blur="inputFocus = false"
+              placeholder="替换歌单"
+            />
+            <div class="tip" v-show="isTipShow">
+              <ul ref="recommendList">
+                <li>飙升榜</li>
+                <li>新歌榜</li>
+                <li>云音乐民谣榜</li>
+                <li>美国Billboard榜</li>
+                <li>UK排行榜周榜</li>
+              </ul>
+            </div>
           </div>
           <ButtonIcon
             title="播放列表"
@@ -276,166 +267,166 @@
                   ></path></svg
               ></span>
             </div>
-            </ButtonIcon>
-            <ButtonIcon
-              :class="{ active: player.shuffle, disabled: player.isPersonalFM }"
-              title="循环"
-              @click.native="switchShuffle"
+          </ButtonIcon>
+          <ButtonIcon
+            :class="{ active: player.shuffle, disabled: player.isPersonalFM }"
+            title="循环"
+            @click.native="switchShuffle"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="random"
+              class="svg-inline--fa fa-random fa-w-16"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
             >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="random"
-                class="svg-inline--fa fa-random fa-w-16"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M504.971 359.029c9.373 9.373 9.373 24.569 0 33.941l-80 79.984c-15.01 15.01-40.971 4.49-40.971-16.971V416h-58.785a12.004 12.004 0 0 1-8.773-3.812l-70.556-75.596 53.333-57.143L352 336h32v-39.981c0-21.438 25.943-31.998 40.971-16.971l80 79.981zM12 176h84l52.781 56.551 53.333-57.143-70.556-75.596A11.999 11.999 0 0 0 122.785 96H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12zm372 0v39.984c0 21.46 25.961 31.98 40.971 16.971l80-79.984c9.373-9.373 9.373-24.569 0-33.941l-80-79.981C409.943 24.021 384 34.582 384 56.019V96h-58.785a12.004 12.004 0 0 0-8.773 3.812L96 336H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h110.785c3.326 0 6.503-1.381 8.773-3.812L352 176h32z"
-                ></path>
-              </svg>
-            </ButtonIcon>
-            <ButtonIcon
-              v-if="enableReversedMode"
-              :class="{
-                active: player.reversed,
-                disabled: player.isPersonalFM,
-              }"
-              title="倒序"
-              @click.native="switchReversed"
+              <path
+                fill="currentColor"
+                d="M504.971 359.029c9.373 9.373 9.373 24.569 0 33.941l-80 79.984c-15.01 15.01-40.971 4.49-40.971-16.971V416h-58.785a12.004 12.004 0 0 1-8.773-3.812l-70.556-75.596 53.333-57.143L352 336h32v-39.981c0-21.438 25.943-31.998 40.971-16.971l80 79.981zM12 176h84l52.781 56.551 53.333-57.143-70.556-75.596A11.999 11.999 0 0 0 122.785 96H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12zm372 0v39.984c0 21.46 25.961 31.98 40.971 16.971l80-79.984c9.373-9.373 9.373-24.569 0-33.941l-80-79.981C409.943 24.021 384 34.582 384 56.019V96h-58.785a12.004 12.004 0 0 0-8.773 3.812L96 336H12c-6.627 0-12 5.373-12 12v56c0 6.627 5.373 12 12 12h110.785c3.326 0 6.503-1.381 8.773-3.812L352 176h32z"
+              ></path>
+            </svg>
+          </ButtonIcon>
+          <ButtonIcon
+            v-if="enableReversedMode"
+            :class="{
+              active: player.reversed,
+              disabled: player.isPersonalFM,
+            }"
+            title="倒序"
+            @click.native="switchReversed"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              data-prefix="fas"
+              data-icon="sort-amount-up"
+              class="svg-inline--fa fa-sort-amount-up fa-w-16"
+              role="img"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
             >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="sort-amount-up"
-                class="svg-inline--fa fa-sort-amount-up fa-w-16"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-              >
-                <path
-                  fill="currentColor"
-                  d="M304 416h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.38-17.24 11.31-27.31l-80-96a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.77 160 16 160zm416 0H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-64 128H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM496 32H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"
-                ></path>
-              </svg>
-            </ButtonIcon>
-            <div class="volume-control">
-              <ButtonIcon title="静音" @click.native="mute">
-                <div v-if="volume > 0.5">
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="fas"
-                    data-icon="volume"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 480 512"
-                    class="svg-inline--fa fa-volume fa-w-15 fa-2x"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM480 256c0-63.53-32.06-121.94-85.77-156.24-11.19-7.14-26.03-3.82-33.12 7.46s-3.78 26.21 7.41 33.36C408.27 165.97 432 209.11 432 256s-23.73 90.03-63.48 115.42c-11.19 7.14-14.5 22.07-7.41 33.36 6.51 10.36 21.12 15.14 33.12 7.46C447.94 377.94 480 319.53 480 256zm-141.77-76.87c-11.58-6.33-26.19-2.16-32.61 9.45-6.39 11.61-2.16 26.2 9.45 32.61C327.98 228.28 336 241.63 336 256c0 14.38-8.02 27.72-20.92 34.81-11.61 6.41-15.84 21-9.45 32.61 6.43 11.66 21.05 15.8 32.61 9.45 28.23-15.55 45.77-45 45.77-76.88s-17.54-61.32-45.78-76.86z"
-                      class=""
-                    ></path>
-                  </svg>
-                </div>
-                <div v-else-if="volume === 0">
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="fas"
-                    data-icon="volume-mute"
-                    class="svg-inline--fa fa-volume-mute fa-w-16"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 512 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM461.64 256l45.64-45.64c6.3-6.3 6.3-16.52 0-22.82l-22.82-22.82c-6.3-6.3-16.52-6.3-22.82 0L416 210.36l-45.64-45.64c-6.3-6.3-16.52-6.3-22.82 0l-22.82 22.82c-6.3 6.3-6.3 16.52 0 22.82L370.36 256l-45.63 45.63c-6.3 6.3-6.3 16.52 0 22.82l22.82 22.82c6.3 6.3 16.52 6.3 22.82 0L416 301.64l45.64 45.64c6.3 6.3 16.52 6.3 22.82 0l22.82-22.82c6.3-6.3 6.3-16.52 0-22.82L461.64 256z"
-                    ></path>
-                  </svg>
-                </div>
-                <div v-else-if="volume <= 0.5 && volume !== 0">
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    data-prefix="fas"
-                    data-icon="volume-down"
-                    class="svg-inline--fa fa-volume-down fa-w-12"
-                    role="img"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 384 512"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M215.03 72.04L126.06 161H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V89.02c0-21.47-25.96-31.98-40.97-16.98zm123.2 108.08c-11.58-6.33-26.19-2.16-32.61 9.45-6.39 11.61-2.16 26.2 9.45 32.61C327.98 229.28 336 242.62 336 257c0 14.38-8.02 27.72-20.92 34.81-11.61 6.41-15.84 21-9.45 32.61 6.43 11.66 21.05 15.8 32.61 9.45 28.23-15.55 45.77-45 45.77-76.88s-17.54-61.32-45.78-76.87z"
-                    ></path>
-                  </svg>
-                </div>
-              </ButtonIcon>
-              <div class="volume-bar">
-                <vue-slider
-                  v-model="volume"
-                  :min="0"
-                  :max="1"
-                  :interval="0.01"
-                  :drag-on-click="true"
-                  :duration="0"
-                  tooltip="none"
-                  :dot-size="12"
+              <path
+                fill="currentColor"
+                d="M304 416h-64a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM16 160h48v304a16 16 0 0 0 16 16h32a16 16 0 0 0 16-16V160h48c14.21 0 21.38-17.24 11.31-27.31l-80-96a16 16 0 0 0-22.62 0l-80 96C-5.35 142.74 1.77 160 16 160zm416 0H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h192a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm-64 128H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zM496 32H240a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h256a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16z"
+              ></path>
+            </svg>
+          </ButtonIcon>
+          <div class="volume-control">
+            <ButtonIcon title="静音" @click.native="mute">
+              <div v-if="volume > 0.5">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="volume"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 480 512"
+                  class="svg-inline--fa fa-volume fa-w-15 fa-2x"
                 >
-                </vue-slider>
+                  <path
+                    fill="currentColor"
+                    d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM480 256c0-63.53-32.06-121.94-85.77-156.24-11.19-7.14-26.03-3.82-33.12 7.46s-3.78 26.21 7.41 33.36C408.27 165.97 432 209.11 432 256s-23.73 90.03-63.48 115.42c-11.19 7.14-14.5 22.07-7.41 33.36 6.51 10.36 21.12 15.14 33.12 7.46C447.94 377.94 480 319.53 480 256zm-141.77-76.87c-11.58-6.33-26.19-2.16-32.61 9.45-6.39 11.61-2.16 26.2 9.45 32.61C327.98 228.28 336 241.63 336 256c0 14.38-8.02 27.72-20.92 34.81-11.61 6.41-15.84 21-9.45 32.61 6.43 11.66 21.05 15.8 32.61 9.45 28.23-15.55 45.77-45 45.77-76.88s-17.54-61.32-45.78-76.86z"
+                    class=""
+                  ></path>
+                </svg>
               </div>
-            </div>
-
-            <ButtonIcon
-              class="lyrics-button"
-              title="歌词"
-              style="margin-left: 12px"
-              @click.native="toggleLyrics"
-            >
-              <svg
-                enable-background="new 0 0 32 32"
-                height="32px"
-                id="Layer_1"
-                version="1.1"
-                viewBox="0 0 32 32"
-                width="32px"
-                xml:space="preserve"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-              >
-                <path
-                  d="M18.221,7.206l9.585,9.585c0.879,0.879,0.879,2.317,0,3.195l-0.8,0.801c-0.877,0.878-2.316,0.878-3.194,0  l-7.315-7.315l-7.315,7.315c-0.878,0.878-2.317,0.878-3.194,0l-0.8-0.801c-0.879-0.878-0.879-2.316,0-3.195l9.587-9.585  c0.471-0.472,1.103-0.682,1.723-0.647C17.115,6.524,17.748,6.734,18.221,7.206z"
-                  fill="currentColor"
-                />
-              </svg>
+              <div v-else-if="volume === 0">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="volume-mute"
+                  class="svg-inline--fa fa-volume-mute fa-w-16"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM461.64 256l45.64-45.64c6.3-6.3 6.3-16.52 0-22.82l-22.82-22.82c-6.3-6.3-16.52-6.3-22.82 0L416 210.36l-45.64-45.64c-6.3-6.3-16.52-6.3-22.82 0l-22.82 22.82c-6.3 6.3-6.3 16.52 0 22.82L370.36 256l-45.63 45.63c-6.3 6.3-6.3 16.52 0 22.82l22.82 22.82c6.3 6.3 16.52 6.3 22.82 0L416 301.64l45.64 45.64c6.3 6.3 16.52 6.3 22.82 0l22.82-22.82c6.3-6.3 6.3-16.52 0-22.82L461.64 256z"
+                  ></path>
+                </svg>
+              </div>
+              <div v-else-if="volume <= 0.5 && volume !== 0">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="volume-down"
+                  class="svg-inline--fa fa-volume-down fa-w-12"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 384 512"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M215.03 72.04L126.06 161H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V89.02c0-21.47-25.96-31.98-40.97-16.98zm123.2 108.08c-11.58-6.33-26.19-2.16-32.61 9.45-6.39 11.61-2.16 26.2 9.45 32.61C327.98 229.28 336 242.62 336 257c0 14.38-8.02 27.72-20.92 34.81-11.61 6.41-15.84 21-9.45 32.61 6.43 11.66 21.05 15.8 32.61 9.45 28.23-15.55 45.77-45 45.77-76.88s-17.54-61.32-45.78-76.87z"
+                  ></path>
+                </svg>
+              </div>
             </ButtonIcon>
+            <div class="volume-bar">
+              <vue-slider
+                v-model="volume"
+                :min="0"
+                :max="1"
+                :interval="0.01"
+                :drag-on-click="true"
+                :duration="0"
+                tooltip="none"
+                :dot-size="12"
+              >
+              </vue-slider>
+            </div>
           </div>
+
+          <ButtonIcon
+            class="lyrics-button"
+            title="歌词"
+            style="margin-left: 12px"
+            @click.native="toggleLyrics"
+          >
+            <svg
+              enable-background="new 0 0 32 32"
+              height="32px"
+              id="Layer_1"
+              version="1.1"
+              viewBox="0 0 32 32"
+              width="32px"
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                d="M18.221,7.206l9.585,9.585c0.879,0.879,0.879,2.317,0,3.195l-0.8,0.801c-0.877,0.878-2.316,0.878-3.194,0  l-7.315-7.315l-7.315,7.315c-0.878,0.878-2.317,0.878-3.194,0l-0.8-0.801c-0.879-0.878-0.879-2.316,0-3.195l9.587-9.585  c0.471-0.472,1.103-0.682,1.723-0.647C17.115,6.524,17.748,6.734,18.221,7.206z"
+                fill="currentColor"
+              />
+            </svg>
+          </ButtonIcon>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
 import VueSlider from "vue-slider-component/dist-css/vue-slider-component.umd.min.js";
 import "vue-slider-component/dist-css/vue-slider-component.css";
 // import theme
-import 'vue-slider-component/theme/default.css'
+import "vue-slider-component/theme/default.css";
 import "./css/slider.css";
 
 import ButtonIcon from "./components/ButtonIcon.vue";
 
 import { Howler, Howl } from "howler";
 import { getTrackDetail, getMusicUrl, getPlaylistDetail } from "./api/music";
-import { throttle } from './utils/common'
+import { throttle, randomShuffle } from "./utils/common";
 
-let { sliderStyle,playListID, ...paths } = MUSICBAR_OPTIONS;
+let { sliderStyle, playListID, ...paths } = MUSICBAR_OPTIONS;
 
 export default {
   name: "Player",
@@ -449,11 +440,14 @@ export default {
         _playing: false, // 是否正在播放中
         _progress: 0, // 当前播放歌曲的进度
         _enabled: false, // 是否启用Player
-        _repeatMode:"off", // off | on | one
+        _repeatMode: "off", // off | on | one
+        _shuffle: false,
+        _reversed: false,
         _volume: 1, // 0 to 1
         _volumeBeforeMuted: 1, // 用于保存静音前的音量
 
         _list: [], // 播放列表
+        _shuffledList: [], // 被随机打乱的播放列表，随机播放模式下会使用此播放列表
         _current: 0, // 当前播放歌曲在播放列表里的index
         _playlistSource: { type: "album", id: 123 }, // 当前播放列表的信息
         _currentTrack: { id: 86827685 }, // 当前播放歌曲的详细信息
@@ -462,7 +456,7 @@ export default {
         // howler (https://github.com/goldfire/howler.js)
         _howler: null,
       },
-      sliderStyle:{
+      sliderStyle: {
         isNyancat: false,
         isRainbow: false,
         isSpitRainbow: false,
@@ -470,43 +464,43 @@ export default {
       },
       showLyrics: false,
       enableReversedMode: true,
-      replaceID:'', // 飙升榜歌单
+      replaceID: "", // 飙升榜歌单
       //推荐歌单
       inputFocus: false,
-      isTipShow:false,
+      isTipShow: false,
     };
   },
   computed: {
-    // ...mapState(["player", "settings", "data"]),
     currentTrack() {
       console.log("currentTrack() ", this.player._currentTrack);
       return this.player._currentTrack;
     },
     barStyle() {
-      // 样式倒序判断
+      // 样式判断
       if (this.sliderStyle.isMario) {
         return {
           mario: true,
-          'mario-stop':this.sliderStyle.isMario && !this.player._playing
-        }
+          "mario-stop": this.sliderStyle.isMario && !this.player._playing,
+        };
       }
       if (this.sliderStyle.isSpitRainbow) {
         return {
           spitRainbow: true,
-          'spitRainbow-stop':this.sliderStyle.isSpitRainbow && !this.player._playing
-        }
+          "spitRainbow-stop":
+            this.sliderStyle.isSpitRainbow && !this.player._playing,
+        };
       }
       if (this.sliderStyle.isRainbow) {
         return {
           rainbow: true,
-          'rainbow-stop':this.sliderStyle.isRainbow && !this.player._playing
-        }
+          "rainbow-stop": this.sliderStyle.isRainbow && !this.player._playing,
+        };
       }
       if (this.sliderStyle.isNyancat) {
         return {
           nyancat: true,
-          'nyancat-stop': this.sliderStyle.isNyancat && !this.player._playing,
-        }
+          "nyancat-stop": this.sliderStyle.isNyancat && !this.player._playing,
+        };
       }
     },
     volume: {
@@ -520,7 +514,7 @@ export default {
     },
     list: {
       get() {
-        return this.player._list;
+        return this.player._shuffle ? this.player._shuffledList : this.player._list;
       },
       set(list) {
         this.player._list = list;
@@ -566,41 +560,54 @@ export default {
         ? "音源来自酷我音乐"
         : "";
     },
+    // 循环播放模式
+    repeatMode: {
+      get() {
+        return this.player._repeatMode;
+      },
+      set(mode) {
+        if (!["off", "on", "one"].includes(mode)) {
+          console.warn(
+            "repeatMode: invaild args, must be 'on' | 'off' | 'one'"
+          );
+          return;
+        }
+        this.player._repeatMode = mode;
+      },
+    },
+    // 随机播放模式 
+    shuffle: {
+      get() {
+        return this.player._shuffle;
+      },
+      set(isShuffle) {
+         this.player._shuffle = isShuffle;
+         if (isShuffle) {
+            this.shuffleList();
+         }
+      }
+    }
   },
   created() {
     // 此时可以访问this，做数据初始化；或者异步数据请求
     this.init();
-    this.playPlaylistByID(playListID = 4989640759);
-    if (sliderStyle.theme === 'isRainbow') {
+    this.playPlaylistByID((playListID = 4989640759));
+    if (sliderStyle.theme === "isRainbow") {
       this.sliderStyle.isRainbow = true;
     }
-    if (sliderStyle.theme === 'isNyancat') {
+    if (sliderStyle.theme === "isNyancat") {
       this.sliderStyle.isNyancat = true;
     }
-    if (sliderStyle.theme === 'isSpitRainbow') {
+    if (sliderStyle.theme === "isSpitRainbow") {
       this.sliderStyle.isSpitRainbow = true;
     }
-    if (sliderStyle.theme === 'isMario') {
+    if (sliderStyle.theme === "isMario") {
       this.sliderStyle.isMario = true;
     }
   },
   mounted() {
     // 绑定搜索推荐事件
     this.recommendListBind();
-  },
-  watch: {
-    $route: function(route) {
-      for (let i in paths) {
-        if (typeof i !== "string") return;
-        if (match(i, route.path).matches) {
-          console.log("watching is on :");
-          processBarStyle =
-            MUSICBAR_OPTIONS[i].processBarStyle ||
-            MUSICBAR_OPTIONS.processBarStyle ||
-            false;
-        }
-      }
-    },
   },
   methods: {
     init() {
@@ -622,36 +629,36 @@ export default {
     },
     // ul的每个li绑定时间
     recommendListBind() {
-      let li = this.$refs.recommendList.querySelectorAll('li');
+      let li = this.$refs.recommendList.querySelectorAll("li");
       // console.log('li',li);
-      for(let i=0;i< li.length;i++) {
-        li[i].onclick = () =>{
+      for (let i = 0; i < li.length; i++) {
+        li[i].onclick = () => {
           this.getRecommendPlaylistID(li[i].innerText);
           this.$refs.input.focus();
-        }
+        };
       }
     },
     getRecommendPlaylistID(text) {
-      if (text === '飙升榜') {
+      if (text === "飙升榜") {
         this.replaceID = 19723756;
       }
-      if (text === '新歌榜') {
+      if (text === "新歌榜") {
         this.replaceID = 3779629;
       }
-      if (text === '美国Billboard榜') {
+      if (text === "美国Billboard榜") {
         this.replaceID = 60198;
       }
-      if (text === 'UK排行榜周榜') {
+      if (text === "UK排行榜周榜") {
         this.replaceID = 180106;
       }
-      if (text === '云音乐民谣榜') {
+      if (text === "云音乐民谣榜") {
         this.replaceID = 5059661515;
       }
     },
     // 替换推荐歌单
     replacePlaylistID() {
       this.playPlaylistByID(this.replaceID);
-      this.replaceID = '';
+      this.replaceID = "";
       this.$refs.input.blur();
       this.isTipShow = false;
     },
@@ -668,10 +675,7 @@ export default {
       throttle(this.playPrevTrack(), 1000);
     },
     goToNextTracksPage() {
-      if (this.player.isPersonalFM) return;
-      this.$route.name === "next"
-        ? this.$router.go(-1)
-        : this.$router.push({ name: "next" });
+      //TODO
     },
     formatTrackTime(value) {
       if (!value) return "";
@@ -683,17 +687,26 @@ export default {
     goToArtist(id) {
       this.$router.push({ path: "/artist/" + id });
     },
-    moveToFMTrash() {
-      this.player.moveToFMTrash();
-    },
     switchRepeatMode() {
-      this.player.switchRepeatMode();
+      if (this.player._repeatMode === "on") {
+        this.repeatMode = "one";
+      } else if (this.player._repeatMode === "one") {
+        this.repeatMode = "off";
+      } else {
+        this.repeatMode = "on";
+      }
     },
     switchShuffle() {
-      this.player.switchShuffle();
+      this.shuffle = !this._shuffle;
     },
     switchReversed() {
-      this.player.switchReversed();
+      this.player._reversed = !this.player._reversed;
+    },
+    async shuffleList(firstTrackID = this.player._currentTrack.id) {
+      let list = this.player._list.filter(tid => tid !== firstTrackID);
+      if (firstTrackID === 'first') list = this.player._list;
+      this.player._shuffledList = randomShuffle(list);
+      if (firstTrackID !== 'first') this.player._shuffledList.unshift(firstTrackID);
     },
     isCurrentTrackLiked() {
       // TODO
@@ -801,13 +814,13 @@ export default {
         format: ["mp3", "flac"],
         onend: () => {
           this._nextTrackCallback();
-        }
+        },
       });
       console.log(this.player._howler);
       // fix：对于网易云请求不到的资源，跳过
       setTimeout(() => {
         if (!this.player?._howler?._duration) {
-        this.playNextTrack();
+          this.playNextTrack();
         }
       }, 5000);
       if (autoplay) {
@@ -828,30 +841,51 @@ export default {
     },
     // 获取下一首歌曲信息
     _getNextTrack() {
-      const next = this.current + 1;
+      const next = this.player._reversed ? this.current - 1 : this.current + 1;
+
       if (this.player._playNextList.length > 0) {
         let trackID = this.player._playNextList.shift();
         return [trackID, this.current];
+      }
+
+      if (this.repeatMode === 'on') {
+        if (this.player._reversed && this.player._current === 0) {
+          return [this.list[this.list.length - 1], this.list.length - 1];
+        }else if (this.list.length === this.player._current + 1){
+          return [this.list[0], 0];
+        }
       }
 
       return [this.list[next], next];
     },
     // 获取上一首歌曲信息
     _getPrevTrack() {
-      const next = this.current - 1;
+      const next = this.player._reversed ? this.current + 1 : this.current - 1;
+
       if (this.list.length === this.current + 1) {
         return [this.list[this.list.length - 1], this.list.length - 1];
       }
+      // 循环模式开启，则重新播放当前模式下的相对的下一首
+      if (this.repeatMode === 'on') {
+        if (this.player._reversed && this.current === 0) {
+          // 倒序模式，当前歌曲是最后一首，则重新播放列表第一首
+          return [this.list[0], 0];
+        } else if (this.list.length === this.current + 1) {
+          // 正序模式，当前歌曲是第一首，则重新播放列表最后一首
+          return [this.list[this.list.length - 1], this.list.length - 1];
+        }
+      }
+      // 返回 [trackID, index]
       return [this.list[next], next];
     },
     // 自动播放下一首
     _nextTrackCallback() {
-    if (this.repeatMode === 'one') {
-      this._replaceCurrentTrack(this._currentTrack.id);
-    } else {
-      this.playNextTrack();
-    }
-  },
+      if (this.player._repeatMode === "one") {
+        this._replaceCurrentTrack(this._currentTrack.id);
+      } else {
+        this.playNextTrack();
+      }
+    },
 
     _initMediaSession() {
       if ("mediaSession" in navigator) {
@@ -952,7 +986,7 @@ export default {
         type: playlistSourceType,
         id: playlistSourceID,
       };
-      // if (this.shuffle) this._shuffleTheList(autoPlayTrackID);
+      if (this.player._shuffle) this.shuffleList(autoPlayTrackID);
       if (autoPlayTrackID === "first") {
         this._replaceCurrentTrack(this.player._list[0]);
       } else {

@@ -4,17 +4,6 @@ import axios from 'axios';
 // let baseURL = '';
 let baseURL = 'https://netease-cloud-music-api-two-rust.vercel.app/'
 
-// Web 和 Electron 跑在不同端口避免同时启动时冲突
-// if (process.env.IS_ELECTRON) {
-//     if (process.env.MODE_ENV === 'production') {
-//         baseURL = process.env.VUE_APP_ELCTRON_API_URL;
-//     } else {
-//         baseURL = process.env.VUE_APP_ELCTRON_API_URL_DEV;
-//     }
-// } else {
-//     baseURL = process.env.VUE_APP_NETEASE_API_URL;
-// }
-
 const service = axios.create({
     baseURL,
     withCredentials: true,
