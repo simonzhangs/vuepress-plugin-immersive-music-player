@@ -30,8 +30,9 @@ export function debounce(func, wait) {
 export function randomShuffle(arr) {
     let length = arr.length;
     if (!Array.isArray(arr) || length <= 1) return;
-    for(let index = 0;i < length - 1; index ++) {
+    for(let index = 0;index < length - 1; index ++) {
         let randomIdx = Math.floor(Math.random()*(length - index)) + index;
         [arr[index],arr[randomIdx]] = [arr[randomIdx],arr[index]];
     }
+    return arr;
 }

@@ -225,7 +225,6 @@
           <ButtonIcon
             :class="{
               active: player._repeatMode !== 'off',
-              disabled: player.isPersonalFM,
             }"
             :title="player._repeatMode === 'one' ? '单曲' : '循环'"
             @click.native="switchRepeatMode"
@@ -269,7 +268,7 @@
             </div>
           </ButtonIcon>
           <ButtonIcon
-            :class="{ active: player.shuffle, disabled: player.isPersonalFM }"
+            :class="{ active: player._shuffle }"
             title="循环"
             @click.native="switchShuffle"
           >
@@ -292,8 +291,7 @@
           <ButtonIcon
             v-if="enableReversedMode"
             :class="{
-              active: player.reversed,
-              disabled: player.isPersonalFM,
+              active: player._reversed,
             }"
             title="倒序"
             @click.native="switchReversed"
@@ -674,6 +672,9 @@ export default {
     playPrevTrack() {
       throttle(this.playPrevTrack(), 1000);
     },
+    switchReversed() {
+      this.switchReversed();
+    },
     goToNextTracksPage() {
       //TODO
     },
@@ -881,7 +882,7 @@ export default {
     // 自动播放下一首
     _nextTrackCallback() {
       if (this.player._repeatMode === "one") {
-        this._replaceCurrentTrack(this._currentTrack.id);
+        this._replaceCurrentTrack(this.player._currentTrack.id);
       } else {
         this.playNextTrack();
       }
