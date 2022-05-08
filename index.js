@@ -1,14 +1,18 @@
-const { path } = require('@vuepress/shared-utils')
+const { resolve } = require('path')
 
 module.exports = (options, context) => ({
     define() {
+        const {
+            sliderStyle = 'Nyancat',
+            playListID = 633015043,
+        } = options
+
         return {
-            MUSICBAR_OPTIONS: options,
+            SLIDER_STYLE: sliderStyle,
+            PLAYLIST_ID: playListID,
         }
     },
     name: 'vuepress-plugin-immersive-music-player',
-    enhanceAppFiles: [
-        path.resolve(__dirname,'./bin/enhanceAppFile.js')
-    ],
+    enhanceAppFiles: resolve(__dirname,'./bin/enhanceAppFile.js'),
     globalUIComponents: 'szPlayer',
 })

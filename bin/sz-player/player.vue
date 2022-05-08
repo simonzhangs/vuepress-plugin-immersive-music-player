@@ -32,11 +32,7 @@
               {{ currentTrack.name }}
             </div>
             <div class="artist">
-              <span
-                v-for="(ar, index) in currentTrack.ar"
-                :key="ar.id"
-                @click="ar.id && goToArtist(ar.id)"
-              >
+              <span v-for="(ar, index) in currentTrack.ar" :key="ar.id">
                 <span :class="{ ar: ar.id }">{{ ar.name }}</span>
                 <span v-if="index !== currentTrack.ar.length - 1">,</span>
               </span>
@@ -98,7 +94,7 @@
             :title="playing ? '暂停' : '开始'"
             @click.native="playOrPause"
           >
-            <div v-if="!playing">
+            <div v-if="!this.player._playing">
               <svg
                 aria-hidden="true"
                 focusable="false"
@@ -422,12 +418,10 @@ import ButtonIcon from "./components/ButtonIcon.vue";
 
 import { Howler, Howl } from "howler";
 import { getTrackDetail, getMusicUrl, getPlaylistDetail } from "./api/music";
-import { throttle, randomShuffle } from "./utils/common";
-
-let { sliderStyle, playListID, ...paths } = MUSICBAR_OPTIONS;
+import { throttle, randomShuffle, debounce } from "./utils/common";
 
 export default {
-  name: "Player",
+  name: "szPlayer",
   components: {
     ButtonIcon,
     VueSlider,
@@ -450,55 +444,57 @@ export default {
         _playlistSource: { type: "album", id: 123 }, // 当前播放列表的信息
         _currentTrack: { id: 86827685 }, // 当前播放歌曲的详细信息
         _playNextList: [], // 当这个list不为空时，会优先播放这个list的歌
-
         // howler (https://github.com/goldfire/howler.js)
         _howler: null,
       },
-      sliderStyle: {
-        isNyancat: false,
-        isRainbow: false,
-        isSpitRainbow: false,
-        isMario: false,
-      },
+      sliderStyle: SLIDER_STYLE,
+      playListID: PLAYLIST_ID,
       showLyrics: false,
       enableReversedMode: true,
       replaceID: "", // 飙升榜歌单
       //推荐歌单
       inputFocus: false,
       isTipShow: false,
+      playerChannel: null,
     };
   },
   computed: {
     currentTrack() {
-      console.log("currentTrack() ", this.player._currentTrack);
+      // console.log("currentTrack() ", this.player._currentTrack);
       return this.player._currentTrack;
     },
     barStyle() {
       // 样式判断
-      if (this.sliderStyle.isMario) {
-        return {
-          mario: true,
-          "mario-stop": this.sliderStyle.isMario && !this.player._playing,
-        };
-      }
-      if (this.sliderStyle.isSpitRainbow) {
-        return {
-          spitRainbow: true,
-          "spitRainbow-stop":
-            this.sliderStyle.isSpitRainbow && !this.player._playing,
-        };
-      }
-      if (this.sliderStyle.isRainbow) {
-        return {
-          rainbow: true,
-          "rainbow-stop": this.sliderStyle.isRainbow && !this.player._playing,
-        };
-      }
-      if (this.sliderStyle.isNyancat) {
-        return {
-          nyancat: true,
-          "nyancat-stop": this.sliderStyle.isNyancat && !this.player._playing,
-        };
+      if (
+        ["isMario", "spitRainbow", "rainbow", "nyancat"].includes(
+          this.sliderStyle
+        )
+      ) {
+        // console.log(this.sliderStyle);
+        if (this.sliderStyle === "isMario") {
+          return {
+            mario: true,
+            "mario-stop": !this.player._playing,
+          };
+        }
+        if (this.sliderStyle === "SpitRainbow") {
+          return {
+            spitRainbow: true,
+            "spitRainbow-stop": !this.player._playing,
+          };
+        }
+        if (this.sliderStyle === "Rainbow") {
+          return {
+            rainbow: true,
+            "rainbow-stop": !this.player._playing,
+          };
+        }
+        if (this.sliderStyle === "Nyancat") {
+          return {
+            nyancat: true,
+            "nyancat-stop": !this.player._playing,
+          };
+        }
       }
     },
     volume: {
@@ -512,7 +508,9 @@ export default {
     },
     list: {
       get() {
-        return this.player._shuffle ? this.player._shuffledList : this.player._list;
+        return this.player._shuffle
+          ? this.player._shuffledList
+          : this.player._list;
       },
       set(list) {
         this.player._list = list;
@@ -554,9 +552,7 @@ export default {
       return duration > 1 ? duration - 1 : duration;
     },
     audioSource() {
-      return this.player._howler?._src.includes("kuwo.cn")
-        ? "音源来自酷我音乐"
-        : "";
+      return this._howler?._src.includes("kuwo.cn") ? "音源来自酷我音乐" : "";
     },
     // 循环播放模式
     repeatMode: {
@@ -573,39 +569,45 @@ export default {
         this.player._repeatMode = mode;
       },
     },
-    // 随机播放模式 
-    shuffle: {
-      get() {
-        return this.player._shuffle;
-      },
-      set(isShuffle) {
-         this.player._shuffle = isShuffle;
-         if (isShuffle) {
-            this.shuffleList();
-         }
-      }
-    }
   },
   created() {
     // 此时可以访问this，做数据初始化；或者异步数据请求
     this.init();
-    this.playPlaylistByID((playListID = 4989640759));
-    if (sliderStyle.theme === "isRainbow") {
-      this.sliderStyle.isRainbow = true;
+    if (typeof process === "undefined") {
+      this.playerChannel = new BroadcastChannel("immersivePlayer");
     }
-    if (sliderStyle.theme === "isNyancat") {
-      this.sliderStyle.isNyancat = true;
+
+    // let that = this;
+    if (typeof process === "undefined") {
+      window.onblur = () => {
+        this.playerChannel.onmessage = (e) => {
+          if (e.data.pauseOtherTabs && document.hidden) {
+            // this.player?._howler.pause();
+            console.log("closing pause");
+            // window.Howler.stop();
+
+            // console.log(this,that);
+            this.player._playing = false;
+            this.player._howler.pause();
+            let player = JSON.parse(localStorage.getItem("player"));
+            this.player._howler?.seek(player._progress);
+          }
+        };
+      };
     }
-    if (sliderStyle.theme === "isSpitRainbow") {
-      this.sliderStyle.isSpitRainbow = true;
-    }
-    if (sliderStyle.theme === "isMario") {
-      this.sliderStyle.isMario = true;
-    }
+
+    this.playNextTrack = debounce(this.playNextTrack, 1500);
+    this.playPrevTrack = debounce(this.playPrevTrack, 1500);
   },
   mounted() {
     // 绑定搜索推荐事件
     this.recommendListBind();
+  },
+  updated() {
+    this.saveSelfToLocalStorage();
+  },
+  beforeDestroy() {
+    this.playerChannel.close();
   },
   methods: {
     init() {
@@ -614,11 +616,26 @@ export default {
       Howler.usingWebAudio = true;
       Howler.volume(this.volume);
 
-      if (this._enabled) {
+      // 首次使用插件时候加载配置歌单ID
+      if (typeof process == "undefined") {
+        // localStorage.removeItem('player')
+        if (!localStorage.getItem("player")) {
+          this.playPlaylistByID(this.playListID);
+        }
+      }
+      // 不是首次加载的话，读取缓存
+      if (this.player._enabled) {
         // 恢复当前播放歌曲
-        this._replaceCurrentTrack(this._currentTrack.id, false).then(() => {
-          // this._howler?.seek(window.localStorage.getItem("playerCurrentTrackTime") ?? 0);
-        });
+        this._replaceCurrentTrack(this.player._currentTrack.id, false).then(
+          () => {
+            let time = 0;
+            if (this.player._progress) {
+              time = this.player._progress;
+            }
+            this.player._howler?.seek(time);
+            this.player._playing = false;
+          }
+        );
         // update audio source and init howler
         this._initMediaSession();
       }
@@ -667,26 +684,22 @@ export default {
       //TODO:收藏
     },
     playNextTrack() {
-      throttle(this.playNextTrack(), 1000);
+      this.playNextTrack();
     },
     playPrevTrack() {
-      throttle(this.playPrevTrack(), 1000);
+      this.playPrevTrack();
     },
     switchReversed() {
       this.switchReversed();
     },
     goToNextTracksPage() {
-      //TODO
+      alert(`开发中，请耐心等待^-^`);
     },
     formatTrackTime(value) {
       if (!value) return "";
       let min = ~~((value / 60) % 60);
       let sec = (~~(value % 60)).toString().padStart(2, "0");
       return `${min}:${sec}`;
-    },
-
-    goToArtist(id) {
-      this.$router.push({ path: "/artist/" + id });
     },
     switchRepeatMode() {
       if (this.player._repeatMode === "on") {
@@ -698,16 +711,22 @@ export default {
       }
     },
     switchShuffle() {
-      this.shuffle = !this._shuffle;
+      this.player._shuffle = !this.player._shuffle;
+      // 随机播放模式
+      if (this.player._shuffle) {
+        this.shuffleList();
+      }
     },
     switchReversed() {
       this.player._reversed = !this.player._reversed;
     },
     async shuffleList(firstTrackID = this.player._currentTrack.id) {
-      let list = this.player._list.filter(tid => tid !== firstTrackID);
-      if (firstTrackID === 'first') list = this.player._list;
+      let list = this.player._list.filter((tid) => tid !== firstTrackID);
+      if (firstTrackID === "first") list = this.player._list;
+      console.log(list);
       this.player._shuffledList = randomShuffle(list);
-      if (firstTrackID !== 'first') this.player._shuffledList.unshift(firstTrackID);
+      if (firstTrackID !== "first")
+        this.player._shuffledList.unshift(firstTrackID);
     },
     isCurrentTrackLiked() {
       // TODO
@@ -720,17 +739,19 @@ export default {
     _setIntervals() {
       setInterval(() => {
         if (this.player._howler === null) return;
+        // console.log(this.player._howler.seek());
         this.player._progress = this.player._howler.seek();
-        // window.localStorage.setItem("playerCurrentTrackTime", this._progress);
+        // localStorage.setItem("playerCurrentTrackTime", this.player._progress);
       }, 1000);
     },
     //player 实例对象从缓存读取
     _loadSelfFromLocalStorage() {
-      // const player = JSON.parse(localStorage.getItem("player"));
-      const player = null;
-      if (!player) return;
-      for (const [key, value] of Object.entries(player)) {
-        this[key] = value;
+      if (typeof process === "undefined") {
+        const player = JSON.parse(localStorage.getItem("player"));
+        if (!player) return;
+        for (const [key, value] of Object.entries(player)) {
+          this.player[key] = value;
+        }
       }
     },
     // 更换当前播放单曲
@@ -763,31 +784,35 @@ export default {
     // 为当前正在播放的视频，音频，提供元数据来自定义媒体通知
     // Navigator.mediaSession:https://developer.mozilla.  org/en-US/docs/Web/API/Navigator/mediaSession
     _updateMediaSessionMetaData(track) {
-      if ("mediaSession" in navigator === false) {
-        return;
-      }
+      let length = this.currentTrackDuration;
+      let trackId = this.current;
       let artists = track.ar.map((a) => a.name);
-      const metadata = {
-        title: track.name,
-        artist: artists.join(","),
-        album: track.al.name,
-        artwork: [
-          {
-            src: track.al.picUrl + "?param=512y512",
-            type: "image/jpg",
-            sizes: "512x512",
-          },
-        ],
-        length: this.currentTrackDuration,
-        trackId: this.current,
-      };
-      navigator.mediaSession.metadata = new window.MediaMetadata(metadata);
+      if (!this.$isServer) {
+        if ("mediaSession" in navigator === false) {
+          return;
+        }
+        const metadata = {
+          title: track.name,
+          artist: artists.join(","),
+          album: track.al.name,
+          artwork: [
+            {
+              src: track.al.picUrl + "?param=512y512",
+              type: "image/jpg",
+              sizes: "512x512",
+            },
+          ],
+          length,
+          trackId,
+        };
+        navigator.mediaSession.metadata = new window.MediaMetadata(metadata);
+      }
     },
 
     // 获取单曲播放url
     _getAudioSource(track) {
       return this._getAudioSourceFromNetease(track).then((source) => {
-        console.log("_getAudioSource", source);
+        // console.log("_getAudioSource", source);
         return source;
       });
     },
@@ -817,18 +842,20 @@ export default {
           this._nextTrackCallback();
         },
       });
-      console.log(this.player._howler);
+      // console.log(this.player._howler);
       // fix：对于网易云请求不到的资源，跳过
       setTimeout(() => {
-        if (!this.player?._howler?._duration) {
+        if (!this.player._howler?._duration) {
           this.playNextTrack();
         }
-      }, 5000);
+      }, 3500);
       if (autoplay) {
         this.play();
-        if (this.player._currentTrack.name) {
-          this.setTitle(this.player._currentTrack);
-        }
+        // if (this.player._currentTrack.name) {
+        //   if (!this.$isServer) {
+        //     this.setTitle(this.player._currentTrack);
+        //   }
+        // }
       }
     },
     // 缓存下一首歌曲
@@ -849,10 +876,10 @@ export default {
         return [trackID, this.current];
       }
 
-      if (this.repeatMode === 'on') {
+      if (this.repeatMode === "on") {
         if (this.player._reversed && this.player._current === 0) {
           return [this.list[this.list.length - 1], this.list.length - 1];
-        }else if (this.list.length === this.player._current + 1){
+        } else if (this.list.length === this.player._current + 1) {
           return [this.list[0], 0];
         }
       }
@@ -867,7 +894,7 @@ export default {
         return [this.list[this.list.length - 1], this.list.length - 1];
       }
       // 循环模式开启，则重新播放当前模式下的相对的下一首
-      if (this.repeatMode === 'on') {
+      if (this.repeatMode === "on") {
         if (this.player._reversed && this.current === 0) {
           // 倒序模式，当前歌曲是最后一首，则重新播放列表第一首
           return [this.list[0], 0];
@@ -902,16 +929,18 @@ export default {
         navigator.mediaSession.setActionHandler("nexttrack", () => {
           this.playNextTrack();
         });
-        //TODO:播放条拖动
+        //TODO:个性化
       }
     },
 
     // 设置浏览器tab栏信息
-    setTitle(track) {
-      document.title = track
-        ? `${track.name} · ${track.ar[0].name} - vuepress-plugin-music-player`
-        : "vuepress-plugin-music-player";
-    },
+    // setTitle(track) {
+    //   if (document) {
+    //     document.title = track
+    //       ? `${track.name} · ${track.ar[0].name} - vuepress-plugin-music-player`
+    //       : "vuepress-plugin-music-player";
+    //   }
+    // },
 
     // 播放下一首歌曲
     playNextTrack() {
@@ -935,18 +964,19 @@ export default {
     },
     // 播放
     play() {
-      // if (this.player._howler?.playing())  return;
+      this.playerChannel.postMessage({ pauseOtherTabs: true });
+      if (this.player._howler?.playing()) {
+        return;
+      }
+      // this.player._howler?.seek(this.player._progress);
       this.player._howler?.play();
       this._setPlaying(true);
-      if (this.player._currentTrack.name) {
-        this.setTitle(this.player._currentTrack);
-      }
     },
     // 暂停
     pause() {
       this.player._howler?.pause();
       this._setPlaying(false);
-      this.setTitle(null);
+      // this.setTitle(null);
     },
     // 寻找、设置播放位置
     seek(time = null) {
@@ -1010,12 +1040,15 @@ export default {
     // 缓存播放列表
     saveSelfToLocalStorage() {
       let player = {};
-      for (let [key, value] of Object.entries(this)) {
-        // if (key !== _playing) continue;
+      for (let [key, value] of Object.entries(this.player)) {
+        if (key == "_howler") {
+          continue;
+        }
         player[key] = value;
       }
-
-      // window.localStorage.setItem('player', JSON.stringify(player));
+      if (typeof process === "undefined") {
+        localStorage.setItem("player", JSON.stringify(player));
+      }
     },
   },
 };

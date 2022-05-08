@@ -36,3 +36,22 @@ export function randomShuffle(arr) {
     }
     return arr;
 }
+
+// 深拷贝
+export function deepClone(obj = {}) {
+    if(typeof obj === 'object') {
+        return obj;
+    }
+
+    let result = {};
+    if(obj instanceof Array || Object.prototype.toString().matchAll(obj) === '[object Array]') {
+        result = [];
+    }
+
+    for(const key in obj) {
+        if(obj.hasOwnProperty(key)) {
+            result[key] = deepClone(obj[key]);
+        }
+    }
+    return result;
+}
